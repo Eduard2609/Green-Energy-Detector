@@ -1,9 +1,9 @@
 // include the library code:
 #include <LiquidCrystal.h>
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 // initialize the library by associating any needed LCD interface pin
 // with the arduino pin number it is connected to
-
 const int 
 backLight = 13,
 rs = 12,
@@ -13,43 +13,61 @@ d5 = 4,
 d6 = 3, 
 d7 = 2,
 hallPin = A1 ;  // initializing a pin for the sensor output
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+// const for RPM and magent
+const int hallSensorPin = 8;               // connect the hall effect sensor on pin 2
+const unsigned long sampleTime = 1000;
+const int maxRPM = 1260;                  // maximum RPM for LCD Bar
+int rpmMaximum = 0;
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
-
-int hallState = 0 ;          // initializing a variable for storing the status of the hall sensor.
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void setup() {
-  
+
+   // This will initialize the hall effect sensor pin as an input pin to the Arduino 
+  pinMode(hallSensorPin,INPUT);
 
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
 
-  // For Wind / Magnet
-
-  // This will initialize the hall effect sensor pin as an input pin to the Arduino :
-  pinMode ( hallPin , INPUT ) ;                        
-
   //Economy mode
   pinMode(backLight, OUTPUT);
 
+  //Start
+  digitalWrite(backLight, HIGH);
+  lcd.print("Initializing");
+  delay(1000);
+  lcd.clear();
+
   //Serial
   Serial.begin(9600);
-  
-  
-
-  ///MAGNET
-  // pinMode ( hallPin , INPUT ) ; 
-
-
-  
 }
 
 void loop() {
-  // set the cursor to column 0, line 0
-  // (note: line 0 is the first row, since counting begins with 0):
-  
+  delay(100);
+  int rpm = getRPM();
+  if (rpm > rpmMaximum) rpmMaximum = rpm;
+  if (rpm < 100) {
+    digitalWrite(backLight, LOW);
+  }
+  else 
+  {
+    digitalWrite(backLight, HIGH);
+  }
+  lcd.clear();
+  displayRPM(rpm);
+  displayBar(rpm);
+    
+}
 
-   // lightcode.c
+void displayLight()
+{
+  // lightcode.c
    // reads the input on analog pin A0 (value between 0 and 1023)
     int analogValue = analogRead(A0);
 
@@ -88,16 +106,57 @@ void loop() {
         Serial.println(" Very Bright");
         lcd.print("Very Bright");
     }
-    delay(700);
-    
-
-    hallState = digitalRead ( hallPin ) ;                           // reading from the sensor and storing the state of the hall effect sensor :
-
-    if ( hallState == LOW ) {                                                // Checking whether the state of the module is high or low
-      Serial.println(" Test On");
-    } 
-
-    else {
-      Serial.println(" Test Off");
-    }
 }
+
+
+int getRPM()
+{
+  int count = 0;
+  boolean countFlag = LOW;
+  unsigned long currentTime = 0;
+  unsigned long startTime = millis();
+  while (currentTime <= sampleTime)
+  {
+    if (digitalRead(hallSensorPin) == HIGH)
+    {
+      countFlag = HIGH;
+    }
+    if (digitalRead(hallSensorPin) == LOW && countFlag == HIGH)
+    {
+      count++;
+      countFlag=LOW;
+    }
+    currentTime = millis() - startTime;
+  }
+  int countRpm = int(60000/float(sampleTime))*count;
+  return countRpm;
+}
+
+void displayRPM(int rpm) 
+{
+  lcd.clear();
+  lcd.setCursor(0, 0); 
+  lcd.print(rpm,DEC);
+  lcd.setCursor(7,0);
+  lcd.print(rpmMaximum, DEC);
+  lcd.setCursor(13,0);
+  lcd.print("MAX");
+  Serial.print("RPM = ");
+  Serial.print(rpm);
+  Serial.print("  MAX RPM = ");
+  Serial.println(rpmMaximum);
+}
+
+void displayBar(int rpm)
+{
+  int numOfBars=map(rpm,0,maxRPM,0,15);
+  lcd.setCursor(0,1);
+  if (rpm!=0)
+  {
+  for (int i=0; i<=numOfBars; i++)
+   {
+        lcd.setCursor(i,1);
+        lcd.write(1023);
+      }
+  }
+} 
