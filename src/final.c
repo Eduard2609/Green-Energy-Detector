@@ -5,7 +5,7 @@
 
 // initialize the library by associating any needed LCD interface pin
 // with the arduino pin number it is connected to
-const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+const int backLight=13, rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
  const int hallPin = A1 ;     // initializing a pin for the sensor output
 
@@ -18,10 +18,13 @@ int hallState = 0 ;          // initializing a variable for storing the status o
 void setup() {
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
+  
+
   // Print a message to the LCD.
   //lcd.print("hello, world!");
 
   Serial.begin(9600);
+  pinMode(backLight, OUTPUT);
   ///MAGNET
  /* pinMode ( ledPin , OUTPUT ) ;      // This will initialize the LED pin as an output pin :
 
@@ -46,28 +49,34 @@ void loop() {
     Serial.print(analogValue);   // the raw analog reading
 
     // We'll have a few threshholds, qualitatively determined
-    if (analogValue < 40) {
+    if (analogValue < 30) {
         lcd.clear();
+        digitalWrite(backLight, LOW);
         Serial.println(" - Dark");
         lcd.print(" - Dark");
     }
     else if (analogValue < 150) {
         lcd.clear();
+        digitalWrite(backLight, HIGH);
         Serial.println(" - Room light");
         lcd.print(" -  Room light");
+        
     }
     else if (analogValue < 250) {
         lcd.clear();
+        digitalWrite(backLight, HIGH);
         Serial.println(" - Light");
         lcd.print(" - Light");
     }
     else if (analogValue < 450) {
         lcd.clear();
+        digitalWrite(backLight, HIGH);
         Serial.println(" - Bright");
         lcd.print(" - Bright");
     }
     else {
         lcd.clear();
+        digitalWrite(backLight, HIGH);
         Serial.println(" - Very Bright");
         lcd.print(" -  Very Bright");
     }
