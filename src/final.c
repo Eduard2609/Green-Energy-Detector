@@ -3,7 +3,6 @@
 
 // initialize the library by associating any needed LCD interface pin
 // with the arduino pin number it is connected to
-float count = 0;
 
 const int 
 backLight = 13,
@@ -12,14 +11,10 @@ en = 11,
 d4 = 5, 
 d5 = 4, 
 d6 = 3, 
-d7 = 2;
+d7 = 2,
+hallPin = A1 ;  // initializing a pin for the sensor output
 
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
-
-const int hallPin = A1 ;     // initializing a pin for the sensor output
-
-
-// variables will change :
 
 int hallState = 0 ;          // initializing a variable for storing the status of the hall sensor.
 
@@ -94,5 +89,15 @@ void loop() {
         lcd.print("Very Bright");
     }
     delay(700);
+    
 
+    hallState = digitalRead ( hallPin ) ;                           // reading from the sensor and storing the state of the hall effect sensor :
+
+    if ( hallState == LOW ) {                                                // Checking whether the state of the module is high or low
+      Serial.println(" Test On");
+    } 
+
+    else {
+      Serial.println(" Test Off");
+    }
 }
