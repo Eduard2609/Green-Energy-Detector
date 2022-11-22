@@ -52,16 +52,17 @@ void loop() {
   delay(100);
   int rpm = getRPM();
   if (rpm > rpmMaximum) rpmMaximum = rpm;
-  if (rpm < 100) {
-    digitalWrite(backLight, LOW);
+  if (rpm > 100) {
+    digitalWrite(backLight, HIGH);
   }
   else 
   {
-    digitalWrite(backLight, HIGH);
+    digitalWrite(backLight, LOW);
   }
   lcd.clear();
   displayRPM(rpm);
-  displayBar(rpm);
+  //displayBar(rpm);
+  displayLight();
     
 }
 
@@ -74,7 +75,7 @@ void displayLight()
     Serial.print("Analog reading = ");
     Serial.print(analogValue);   // the raw analog reading
 
-    
+    lcd.clear();
     // We'll have a few threshholds, qualitatively determined
     if (analogValue < 30) {
         lcd.clear();                  // without this you can have error prints
