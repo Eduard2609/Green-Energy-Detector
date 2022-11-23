@@ -14,7 +14,7 @@ d6 = 3,
 d7 = 2,
 hallPin = A1 ;  // initializing a pin for the sensor output
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-float V1 = 0, V2= 0, Vt= 0;
+int V1 = 0, V2= 0, Vt= 0;
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // const for RPM and magent
 const int hallSensorPin = 8;               // connect the hall effect sensor on pin 2
@@ -66,18 +66,20 @@ void loop() {
   //displayRPM(rpm);
   displayWind();
   displayLight();
-  lcd.setCursor(13, 0); 
+  lcd.setCursor(12, 0); 
   Vt= V1+V2;
   if (Vt < 1)
   {
     digitalWrite(backLight, LOW);
     Serial.println(Vt);
+    lcd.print("P:");
     lcd.print(Vt);
   }
   else
   {
     digitalWrite(backLight, HIGH);
     Serial.println(Vt);
+    lcd.print("P:");
     lcd.print(Vt);
   }
   
@@ -97,37 +99,29 @@ void displayLight()
     lcd.setCursor(0, 0); 
     // We'll have a few threshholds, qualitatively determined
     if (analogValue < 50) {
-        //lcd.clear();                  // without this you can have error prints
-        
-        //digitalWrite(backLight, LOW); // if is dark we will stop the backlight 
         Serial.println(" Dark");
         lcd.print("Dark");
         V2=0;
     }
     else if (analogValue < 150) {
-       // lcd.clear();
-        digitalWrite(backLight, HIGH);
+
         Serial.println(" Room light");
         lcd.print("Room light");
-        V2=0;
+        V2=1;
     }
     else if (analogValue < 250) {
-        //lcd.clear();
-        digitalWrite(backLight, HIGH);
+
         Serial.println(" Light");
         lcd.print("Light");
         V2=1;
     }
     else if (analogValue < 450) {
-        //lcd.clear();
-        digitalWrite(backLight, HIGH);
+
         Serial.println(" Bright");
         lcd.print("Bright");
         V2=2;
     }
     else {
-        //lcd.clear();
-        digitalWrite(backLight, HIGH);
         Serial.println(" Very Bright");
         lcd.print("Very Bright");
         V2=3;
@@ -197,8 +191,8 @@ void displayWind()
     lcd.clear();
     lcd.setCursor(0, 1);
     lcd.print("No Wind");
-    lcd.setCursor(13,1);
-    lcd.print(rpm,DEC);
+    // lcd.setCursor(13,1);
+    // lcd.print(rpm,DEC);
     V1=0;
   }
 else if (rpm < 200) {
@@ -206,8 +200,8 @@ else if (rpm < 200) {
     lcd.setCursor(0, 1);
     digitalWrite(backLight, HIGH);
     lcd.print("Light Wind");
-    lcd.setCursor(13,1);
-    lcd.print(rpm,DEC);
+    // lcd.setCursor(13,1);
+    // lcd.print(rpm,DEC);
     V1=1;
   }
 else if (rpm < 300) {
@@ -215,8 +209,8 @@ else if (rpm < 300) {
     lcd.setCursor(0, 1);
     digitalWrite(backLight, HIGH);
     lcd.print("Medium Wind");
-    lcd.setCursor(13,1);
-    lcd.print(rpm,DEC);
+    // lcd.setCursor(13,1);
+    // lcd.print(rpm,DEC);
     V1=2;
   }
 else if (rpm < 400) {
@@ -224,8 +218,8 @@ else if (rpm < 400) {
     lcd.setCursor(0, 1);
     digitalWrite(backLight, HIGH);
     lcd.print("Strong Wind");
-    lcd.setCursor(13,1);
-    lcd.print(rpm,DEC);
+    // lcd.setCursor(13,1);
+    // lcd.print(rpm,DEC);
     V1=2;
   }
 else {
@@ -233,8 +227,8 @@ else {
     lcd.setCursor(0, 1);
     digitalWrite(backLight, HIGH);
     lcd.print("V.Strong Wind");
-    lcd.setCursor(13,1);
-    lcd.print(rpm,DEC);
+    // lcd.setCursor(13,1);
+    // lcd.print(rpm,DEC);
     V1=3;
   }
 }
