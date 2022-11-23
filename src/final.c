@@ -232,7 +232,7 @@ else {
     lcd.clear();
     lcd.setCursor(0, 1);
     digitalWrite(backLight, HIGH);
-    lcd.print("Very Strong Wind");
+    lcd.print("V.Strong Wind");
     lcd.setCursor(13,1);
     lcd.print(rpm,DEC);
     V1=3;
