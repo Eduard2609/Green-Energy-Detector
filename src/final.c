@@ -49,7 +49,7 @@ void setup() {
 }
 
 void loop() {
-  delay(1000);
+  delay(500);
   // int rpm = getRPM();
   // if (rpm > rpmMaximum) rpmMaximum = rpm;
   // if (rpm > 100) {
