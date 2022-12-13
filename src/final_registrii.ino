@@ -83,20 +83,7 @@ ISR(ADC_vect){//la fiecare 1048ms trebuie sa se initieze o citire a semnalului a
 
 void loop() {
   delay(250);
-  // int rpm = getRPM();
-  // if (rpm > rpmMaximum) rpmMaximum = rpm;
-  // if (rpm > 100) {
-  //   digitalWrite(backLight, HIGH);
-  // }
-  // else 
-  // {
-  //   digitalWrite(backLight, LOW);
-  // }
-  //lcd.clear();
-  
-  //displayBar(rpm);
- // lcd.setCursor(0, 0); 
-  //displayRPM(rpm);
+
   displayWind();
   displayLightReg();
   lcd.setCursor(12, 0); 
@@ -119,47 +106,6 @@ void loop() {
     
 }
 
-// void displayLight()
-// {
-//   // lightcode.c
-//    // reads the input on analog pin A0 (value between 0 and 1023)
-//     int analogValue = analogRead(A0);
-
-//     Serial.print("Analog reading = ");
-//     Serial.print(analogValue);   // the raw analog reading
-
-    
-//     lcd.setCursor(0, 0); 
-//     // We'll have a few threshholds, qualitatively determined
-//     if (analogValue < 50) {
-//         Serial.println(" Dark");
-//         lcd.print("Dark");
-//         V2=0;
-//     }
-//     else if (analogValue < 150) {
-
-//         Serial.println(" Room light");
-//         lcd.print("Room light");
-//         V2=1;
-//     }
-//     else if (analogValue < 250) {
-
-//         Serial.println(" Light");
-//         lcd.print("Light");
-//         V2=1;
-//     }
-//     else if (analogValue < 450) {
-
-//         Serial.println(" Bright");
-//         lcd.print("Bright");
-//         V2=2;
-//     }
-//     else {
-//         Serial.println(" Very Bright");
-//         lcd.print("Very Bright");
-//         V2=3;
-//     }
-// }
 
 void displayLightReg(){
   Serial.println(value);
@@ -222,7 +168,6 @@ int getRPM()
 
 void displayRPM(int rpm) 
 {
- // lcd.clear();
   lcd.setCursor(0, 1); 
   lcd.print(rpm,DEC);
   lcd.setCursor(7,1);
