@@ -14,7 +14,7 @@ hallPin = A1 ;                              // initializarea unui pin pentru ies
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 int V1 = 0, V2= 0, Vt= 0;
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-// const for RPM and magent
+// const pentru RPM si magent
 const int hallSensorPin = 8;                // conectati senzorul cu efect hall la pinul 2
 const unsigned long sampleTime = 1000;
 const int maxRPM = 1260;                    // rpm maxim pentru bara lcd
