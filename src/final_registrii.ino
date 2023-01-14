@@ -2,7 +2,7 @@
 #include <LiquidCrystal.h>
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-// initialize the library by associating any needed LCD interface pin
+// initialize the library by associating any needed LCD interface pins
 // with the arduino pin number it is connected to
 const int 
 backLight = 13,
